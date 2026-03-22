@@ -5,7 +5,26 @@ across multiple files, as well as the implementation of pytest hooks to customiz
 execution lifecycle (e.g., adding command-line options or modifying how tests are collected).
 """
 
+from collections.abc import Iterator
+
 import pytest
+from sqlmodel import Session, SQLModel, create_engine
+
+import entities.link  # noqa: F401 — registers Link metadata before create_all
+
+TEST_POSTGRES_URL = "postgresql://postgres:password@db:5432/links_db_test"
+
+
+@pytest.fixture
+def db_session() -> Iterator[Session]:
+    """Provide a clean database session against links_db_test for each test."""
+    test_engine = create_engine(TEST_POSTGRES_URL)
+    SQLModel.metadata.drop_all(test_engine)
+    SQLModel.metadata.create_all(test_engine)
+    with Session(test_engine) as session:
+        yield session
+    SQLModel.metadata.drop_all(test_engine)
+    test_engine.dispose()
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
