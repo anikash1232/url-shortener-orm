@@ -35,7 +35,7 @@ def create_link(
     ],
     link_svc: LinkServiceDI,
 ) -> LinkModel:
-    return link_svc.create(link.slug, link)
+    return link_svc.create(link.slug, link.target)
 
 
 @router.get("/links", summary="List all Links", tags=["Amy"])
