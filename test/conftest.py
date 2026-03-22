@@ -10,8 +10,6 @@ from collections.abc import Iterator
 import pytest
 from sqlmodel import Session, SQLModel, create_engine
 
-import entities.link  # noqa: F401 — registers Link metadata before create_all
-
 TEST_POSTGRES_URL = "postgresql://postgres:password@db:5432/links_db_test"
 
 

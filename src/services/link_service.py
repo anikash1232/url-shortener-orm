@@ -15,7 +15,9 @@ class LinkService:
     def list_links(self) -> list[LinkModel]:
         """Return a list of all stored links."""
         links = self._session.exec(select(Link)).all()
-        return [LinkModel(slug=lnk.slug, target=lnk.target, hits=lnk.hits) for lnk in links]
+        return [
+            LinkModel(slug=lnk.slug, target=lnk.target, hits=lnk.hits) for lnk in links
+        ]
 
     def get(self, slug: str) -> LinkModel | None:
         """Retrieve a link by slug and increment its hit counter."""

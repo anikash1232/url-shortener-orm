@@ -27,7 +27,9 @@ def client(db_session: Session) -> Iterator[TestClient]:
 @pytest.mark.integration
 def test_follow_link_redirects(client: TestClient) -> None:
     """Redirects when a matching slug exists."""
-    client.post("/links", json={"slug": "comp423", "target": "https://comp423-26s.github.io"})
+    client.post(
+        "/links", json={"slug": "comp423", "target": "https://comp423-26s.github.io"}
+    )
 
     response = client.get("/comp423", follow_redirects=False)
 
